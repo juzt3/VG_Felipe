@@ -1,15 +1,15 @@
 import javax.swing.JFrame;
 
-import Pantallas.PantallaPrincipal;
+import managers.GameManager;
 import opciones.Constantes;
 
 public class Main extends JFrame implements Constantes {
-	private	PantallaPrincipal pp;
+	private	GameManager gm;
 	
 	public Main() {
 		
-		pp = new PantallaPrincipal();
-		add(pp);
+		gm = new GameManager();
+		add(gm);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(anchoMundo, altoMundo);

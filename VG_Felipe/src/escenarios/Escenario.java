@@ -9,12 +9,10 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.JComponent;
 
 import opciones.Constantes;
 import Musica.HiloMusica;
@@ -24,7 +22,7 @@ import personajes.Jugador;
 import personajes.Objetivo;
 import personajes.Obstaculo;
 
-public class Escenario extends JPanel implements ActionListener, Constantes{
+public class Escenario extends JComponent implements ActionListener, Constantes{
 	//Personajes
 	private Jugador jugador;
 	private ArrayList<Enemigos> enemigos;
@@ -33,12 +31,10 @@ public class Escenario extends JPanel implements ActionListener, Constantes{
 	public static Casa casa;
 	//Otros atributos
 	private boolean enjuego;
-	private Timer timer;
 	public HiloMusica player;
 	
 	public Escenario() {
 		this.jugador = new Jugador(64,64);
-		this.addKeyListener(new TAdapter());
 		this.setFocusable(true);
 		this.requestFocus();
 		this.setBackground(Color.BLACK);
@@ -52,10 +48,7 @@ public class Escenario extends JPanel implements ActionListener, Constantes{
 		initEnemigos();
 		initObjetivos();
 		initCasa();
-		
-		player.run();
-		timer = new Timer(3, this);
-        timer.start();
+
 	}
 	
 	private void initCasa(){
@@ -114,7 +107,6 @@ public class Escenario extends JPanel implements ActionListener, Constantes{
     }
 	
 	public void paint(Graphics g) {
-		super.paint(g);
 		
 		Graphics2D g2d = (Graphics2D)g;
 		
@@ -156,16 +148,13 @@ public class Escenario extends JPanel implements ActionListener, Constantes{
 		Toolkit.getDefaultToolkit().sync();
         g.dispose();
 	}
-	
-	private class TAdapter extends KeyAdapter {
 
-        public void keyReleased(KeyEvent e) {
-            jugador.keyReleased(e);
-        }
+    public void keyReleased(KeyEvent e) {
+        jugador.keyReleased(e);
+    }
 
-        public void keyPressed(KeyEvent e) {
-            jugador.keyPressed(e);
-        }
+    public void keyPressed(KeyEvent e) {
+        jugador.keyPressed(e);
     }
 
 	@Override
@@ -195,6 +184,7 @@ public class Escenario extends JPanel implements ActionListener, Constantes{
                 jugador.setVisible(false);
                 e.setVisible(false);
                 this.enjuego = false;
+                this.player.parar();
             }
         }
         
@@ -227,4 +217,5 @@ public class Escenario extends JPanel implements ActionListener, Constantes{
         }
         
 	}
+	
 }

@@ -34,4 +34,12 @@ public class HiloMusica extends Thread {
 			e.toString();
 		}
 	}
+	
+	public void parar(){
+		cancion.stop();
+	}
+	
+	public void reanudar(){
+		cancion.start();
+	}
 }

@@ -11,12 +11,12 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
 import opciones.Constantes;
 
 
-public class PantallaPrincipal extends JPanel implements Constantes {
+public class PantallaPrincipal extends JComponent implements Constantes {
 	
 	BufferedImage fondo;
 	String[] opciones = {
@@ -25,8 +25,6 @@ public class PantallaPrincipal extends JPanel implements Constantes {
 	int seleccion = 0;
 	
 	public PantallaPrincipal(){
-		this.setFocusable(true);
-		this.setBackground(Color.black);
 		try{
 			fondo = ImageIO.read(new File("images/backmain.png"));
 		}
@@ -66,17 +64,7 @@ public class PantallaPrincipal extends JPanel implements Constantes {
         Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 	}
-	/*	Para el game manager
-	private void select() {
-		if(seleccion == 0){
-			this.enjuego = true;
-		}
-		else{
-			System.exit(0);
-		}
-	}
-	*/
-	
+
 	public void keyPressed(KeyEvent evt){
 		int key = evt.getKeyCode();
 
@@ -97,10 +85,9 @@ public class PantallaPrincipal extends JPanel implements Constantes {
             	seleccion = 1;
             }
         }
-        /*
-        if (key == KeyEvent.VK_ENTER){
-        	select();
-        }
-        */
+	}
+	
+	public int getSeleccion(){
+		return seleccion;
 	}
 }
