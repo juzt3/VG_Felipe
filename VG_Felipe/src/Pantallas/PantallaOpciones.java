@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
 
 import opciones.Constantes;
+import opciones.Opciones;
 
 public class PantallaOpciones extends JComponent implements Constantes{
 	
@@ -19,6 +20,8 @@ public class PantallaOpciones extends JComponent implements Constantes{
 			"Música",
 			"Cerrar Juego"
 	};
+	
+	private boolean musica = true;
 	
 	private int seleccion = 0;
 	
@@ -43,22 +46,25 @@ public class PantallaOpciones extends JComponent implements Constantes{
         }else{
         	g.setColor(Color.white);
         }
-        g.drawString(opciones[0], (anchoMundo - metr.stringWidth(opciones[0])) / 2, 300);
+        g.drawString(opciones[0]+" "+Opciones.iajugador, (anchoMundo - metr.stringWidth(opciones[0])) / 2, 300);
         //I.A Enemigos
         if(seleccion == 1){
         	g.setColor(Color.red);
         }else{
         	g.setColor(Color.white);
         }
-        g.drawString(opciones[1], (anchoMundo - metr.stringWidth(opciones[0])) / 2, 350);
+        g.drawString(opciones[1]+" "+Opciones.iaenemigos, (anchoMundo - metr.stringWidth(opciones[0])) / 2, 350);
         //Música
         if(seleccion == 2){
         	g.setColor(Color.red);
         }else{
         	g.setColor(Color.white);
         }
-        g.drawString(opciones[2], (anchoMundo - metr.stringWidth(opciones[0])) / 2, 400);
-        //opciones de musica
+        if(musica){
+        	g.drawString(opciones[2]+" Encendida", (anchoMundo - metr.stringWidth(opciones[0])) / 2, 400);
+        }else{
+        	g.drawString(opciones[2]+" Apagada", (anchoMundo - metr.stringWidth(opciones[0])) / 2, 400);
+        }
         
         //Cerrar Juego
         if(seleccion == 3){
@@ -92,10 +98,44 @@ public class PantallaOpciones extends JComponent implements Constantes{
             	seleccion += 1;
             }
         }
+        
+        if(key == KeyEvent.VK_RIGHT){
+        	if(seleccion == 0){
+        		if(Opciones.iajugador < Opciones.maxlevel){
+        			Opciones.iajugador += 1;
+        		}
+        	}
+        	if(seleccion == 1){
+        		if(Opciones.iaenemigos < Opciones.maxlevel){
+        			Opciones.iaenemigos += 1;
+        		}
+        	}
+        }
+        
+        if(key == KeyEvent.VK_LEFT){
+        	if(seleccion == 0){
+        		if(Opciones.iajugador > 0){
+        			Opciones.iajugador -= 1;
+        		}
+        	}
+        	if(seleccion == 1){
+        		if(Opciones.iaenemigos > 0){
+        			Opciones.iaenemigos -= 1;
+        		}
+        	}
+        }
 	}
 	
 	public int getSeleccion(){
 		return seleccion;
+	}
+	
+	public void setMusica(boolean o){
+		musica = o;
+	}
+	
+	public boolean isMusica(){
+		return musica;
 	}
 
 }

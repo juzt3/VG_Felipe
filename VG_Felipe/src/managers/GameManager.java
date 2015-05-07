@@ -23,6 +23,7 @@ public class GameManager extends JPanel implements ActionListener {
 	private PantallaOpciones op;
 	
 	private boolean esperar = true;
+	private boolean esperarmusica = true;
 	
 	private Timer timer;
 	
@@ -65,6 +66,13 @@ public class GameManager extends JPanel implements ActionListener {
         			if(op.getSeleccion() == 3){
         				System.exit(0);
         			}
+        			if(op.getSeleccion() == 2 && esperarmusica){
+        				op.setMusica(false);
+        			}else{
+        				if(op.getSeleccion() == 2 && !esperarmusica)
+        					op.setMusica(true);
+        			}
+        			esperarmusica = !esperarmusica;
         		}
         	}
         	
@@ -79,7 +87,9 @@ public class GameManager extends JPanel implements ActionListener {
         			gsm.setEN_OPCIONES(false);
         			gsm.setEN_MENU(false);
         			gsm.setEN_JUEGO(true);
-        			es.player.reanudar();
+        			if(op.isMusica()){
+        				es.player.reanudar();
+        			}
         		}
         		esperar = !esperar;
         	}
