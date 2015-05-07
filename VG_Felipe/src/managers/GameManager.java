@@ -12,12 +12,17 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import escenarios.Escenario;
+import Pantallas.PantallaOpciones;
 import Pantallas.PantallaPrincipal;
 
 public class GameManager extends JPanel implements ActionListener {
 	private GameStateManager gsm;
+	
 	private PantallaPrincipal pp;
 	private Escenario es;
+	private PantallaOpciones op;
+	
+	private boolean esperar = true;
 	
 	private Timer timer;
 	
@@ -26,6 +31,7 @@ public class GameManager extends JPanel implements ActionListener {
 		gsm = new GameStateManager();
 		pp = new PantallaPrincipal();
 		es = new Escenario();
+		op = new PantallaOpciones();
 		this.setFocusable(true);
 		this.setBackground(Color.BLACK);
 		
@@ -55,6 +61,27 @@ public class GameManager extends JPanel implements ActionListener {
         				System.exit(0);
         			}
         		}
+        		if(gsm.isEN_OPCIONES()){
+        			if(op.getSeleccion() == 3){
+        				System.exit(0);
+        			}
+        		}
+        	}
+        	
+        	if(key == KeyEvent.VK_ESCAPE){
+        		if(gsm.isEN_JUEGO() && esperar){
+        			gsm.setEN_JUEGO(false);
+        			gsm.setEN_MENU(false);
+        			gsm.setEN_OPCIONES(true);
+        			es.player.parar();
+        		}
+        		if(gsm.isEN_OPCIONES() && !esperar){
+        			gsm.setEN_OPCIONES(false);
+        			gsm.setEN_MENU(false);
+        			gsm.setEN_JUEGO(true);
+        			es.player.reanudar();
+        		}
+        		esperar = !esperar;
         	}
         	
             if(gsm.isEN_MENU()){
@@ -63,6 +90,10 @@ public class GameManager extends JPanel implements ActionListener {
             
             if(gsm.isEN_JUEGO()){
             	es.keyPressed(e);
+            }
+            
+            if(gsm.isEN_OPCIONES()){
+            	op.keyPressed(e);
             }
         }
     }
@@ -77,6 +108,9 @@ public class GameManager extends JPanel implements ActionListener {
 		if(gsm.isEN_JUEGO()){
 			es.paint(g);
 		}
+		if(gsm.isEN_OPCIONES()){
+			op.paint(g);
+		}
 		
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
@@ -90,6 +124,9 @@ public class GameManager extends JPanel implements ActionListener {
 		if(gsm.isEN_MENU()){
 			pp.repaint();
         }
+		if(gsm.isEN_OPCIONES()){
+			op.repaint();
+		}
 		this.repaint();
 	}
 }

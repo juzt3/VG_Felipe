@@ -18,11 +18,11 @@ import opciones.Constantes;
 
 public class PantallaPrincipal extends JComponent implements Constantes {
 	
-	BufferedImage fondo;
-	String[] opciones = {
+	private BufferedImage fondo;
+	private String[] opciones = {
 			"Jugar", "Salir"
 	};
-	int seleccion = 0;
+	private int seleccion = 0;
 	
 	public PantallaPrincipal(){
 		try{
