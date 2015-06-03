@@ -16,6 +16,8 @@ public class Jugador implements Constantes {
 	//Coordenadas
 	private int i, j;
 	private int lasti, lastj;
+	//Util
+	private String lastmove;
 	//Modificadores de coordenadas
 	private int di, dj;
 	//Nombre imagen
@@ -77,6 +79,18 @@ public class Jugador implements Constantes {
 		return j;
 	}
 	
+	public int getLasti() {
+		return lasti;
+	}
+	
+	public int getLastj() {
+		return lastj;
+	}
+	
+	public String getLastmove() {
+		return this.lastmove;
+	}
+	
 	public Rectangle getBounds() {
         return new Rectangle(this.i, this.j, this.ancho, this.alto);
     }
@@ -91,21 +105,21 @@ public class Jugador implements Constantes {
         //Hay que mejorar la implementacion en las esquinas
         for(int x = 0; x<Escenario.obstaculos.size(); x++){
         	Obstaculo o = (Obstaculo)Escenario.obstaculos.get(x);
-        	if(rj.intersects(o.getBounds())){
+        	if(rj.contains(o.getBounds())){
         		//Colision con lado izq
-        		if(this.i<o.getI()){
+        		if(lasti<o.getI()){
         			i=lasti;
         		}
         		//Colision der
-        		if(this.i>o.getI()){
+        		if(lasti>o.getI()){
         			i=lasti;
         		}
         		//Colision arriba
-        		if(this.j<o.getJ()){
+        		if(lastj<o.getJ()){
         			j=lastj;
         		}
         		//Colision abajo
-        		if(this.j>o.getJ()){
+        		if(lastj>o.getJ()){
         			j=lastj;
         		}
         	}
@@ -148,24 +162,53 @@ public class Jugador implements Constantes {
         }
     }
 	
+	public void mover_izq() {
+		di = -1*64;
+		this.lastmove = "izq";
+	}
+	
+	public void mover_der() {
+		di = 1*64;
+		this.lastmove = "der";
+	}
+	
+	public void mover_arriba() {
+		dj = -1*64;
+		this.lastmove = "arr";
+	}
+	
+	public void mover_abajo() {
+		dj = 1*64;
+		this.lastmove = "aba";
+	}
+	
+	public void detener_mover(){
+		di = 0;
+		dj = 0;
+	}
+	
 	public void keyPressed(KeyEvent e) {
 
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {
-            di = -1;
+            //di = -1;
+        	mover_izq();
         }
 
         if (key == KeyEvent.VK_RIGHT) {
-            di = 1;
+            //di = 1;
+            mover_der();
         }
 
         if (key == KeyEvent.VK_UP) {
-            dj = -1;
+            //dj = -1;
+        	mover_arriba();
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            dj = 1;
+            //dj = 1;
+        	mover_abajo();
         }
     }
 	

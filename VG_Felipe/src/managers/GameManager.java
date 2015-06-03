@@ -11,11 +11,12 @@ import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import opciones.Constantes;
 import escenarios.Escenario;
 import Pantallas.PantallaOpciones;
 import Pantallas.PantallaPrincipal;
 
-public class GameManager extends JPanel implements ActionListener {
+public class GameManager extends JPanel implements ActionListener, Constantes {
 	private GameStateManager gsm;
 	
 	private PantallaPrincipal pp;
@@ -35,8 +36,9 @@ public class GameManager extends JPanel implements ActionListener {
 		op = new PantallaOpciones();
 		this.setFocusable(true);
 		this.setBackground(Color.BLACK);
+		this.setSize(altoMundo, anchoMundo);
 		
-		timer = new Timer(3, this);
+		timer = new Timer(160, this);
         timer.start();
 	}
 	

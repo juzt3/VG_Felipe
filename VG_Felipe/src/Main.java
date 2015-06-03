@@ -22,7 +22,4 @@ public class Main extends JFrame implements Constantes {
 	public static void main(String[] args) {
 		new Main();
 	}
-
-	
-
 }

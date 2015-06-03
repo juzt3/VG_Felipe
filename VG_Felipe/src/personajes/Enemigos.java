@@ -14,6 +14,7 @@ import opciones.Constantes;
 public class Enemigos implements Constantes {
 	//Coordenadas
 	private int i, j;
+	private int di, dj;
 	private int lasti, lastj;
 	//Nombre imagen
 	private String imgEnemigo = "enemigos.png";
@@ -80,7 +81,8 @@ public class Enemigos implements Constantes {
 		
 		lasti=i;
 		lastj=j;
-		this.i -= 1;
+		i += di;
+        j += dj;
 		
 		Rectangle rj = this.getBounds();
         //Hay que mejorar la implementacion en las esquinas
@@ -88,19 +90,19 @@ public class Enemigos implements Constantes {
         	Obstaculo o = (Obstaculo)Escenario.obstaculos.get(x);
         	if(rj.intersects(o.getBounds())){
         		//Colision con lado izq
-        		if(this.i<o.getI()){
+        		if(lasti<o.getI()){
         			i=lasti;
         		}
         		//Colision der
-        		if(this.i>o.getI()){
+        		if(lasti>o.getI()){
         			i=lasti;
         		}
         		//Colision arriba
-        		if(this.j<o.getJ()){
+        		if(lastj<o.getJ()){
         			j=lastj;
         		}
         		//Colision abajo
-        		if(this.j>o.getJ()){
+        		if(lastj>o.getJ()){
         			j=lastj;
         		}
         	}
@@ -110,19 +112,19 @@ public class Enemigos implements Constantes {
         	Objetivo o = (Objetivo)Escenario.objetivos.get(x);
         	if(rj.intersects(o.getBounds())){
         		//Colision con lado izq
-        		if(this.i<o.getI()){
+        		if(lasti<o.getI()){
         			i=lasti;
         		}
         		//Colision der
-        		if(this.i>o.getI()){
+        		if(lasti>o.getI()){
         			i=lasti;
         		}
         		//Colision arriba
-        		if(this.j<o.getJ()){
+        		if(lastj<o.getJ()){
         			j=lastj;
         		}
         		//Colision abajo
-        		if(this.j>o.getJ()){
+        		if(lastj>o.getJ()){
         			j=lastj;
         		}
         	}
@@ -145,5 +147,30 @@ public class Enemigos implements Constantes {
         }
 
     }
+	
+	public void mover_izq() {
+		di = -1*64;
+
+	}
+	
+	public void mover_der() {
+		di = 1*64;
+
+	}
+	
+	public void mover_arriba() {
+		dj = -1*64;
+
+	}
+	
+	public void mover_abajo() {
+		dj = 1*64;
+
+	}
+	
+	public void detener_mover(){
+		di = 0;
+		dj = 0;
+	}
 
 }
