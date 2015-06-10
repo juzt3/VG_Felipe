@@ -38,7 +38,7 @@ public class GameManager extends JPanel implements ActionListener, Constantes {
 		this.setBackground(Color.BLACK);
 		this.setSize(altoMundo, anchoMundo);
 		
-		timer = new Timer(160, this);
+		timer = new Timer(120, this);
         timer.start();
 	}
 	

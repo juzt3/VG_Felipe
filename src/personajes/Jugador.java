@@ -16,8 +16,6 @@ public class Jugador implements Constantes {
 	//Coordenadas
 	private int i, j;
 	private int lasti, lastj;
-	//Util
-	private String lastmove;
 	//Modificadores de coordenadas
 	private int di, dj;
 	//Nombre imagen
@@ -26,7 +24,8 @@ public class Jugador implements Constantes {
 	private int ancho, alto;
 	private boolean visible;
 	private BufferedImage imagen;
-	private int monedas;
+	
+	private Objetivo o;
 	
 	public Jugador(int i, int j){
 		this.i = i;
@@ -40,7 +39,25 @@ public class Jugador implements Constantes {
 		this.ancho = this.imagen.getWidth();
 		this.alto = this.imagen.getHeight();
 		this.setVisible(true);
-		this.setMonedas(0);
+	}
+	
+	public void setObjetivo(Objetivo o){
+		this.o = o;
+	}
+	
+	public void resetObjetivo(){
+		this.o = null;
+	}
+	
+	public boolean hasObjetivo(){
+		if(this.o != null)
+			return true;
+		else
+			return false;
+	}
+	
+	public Objetivo getObjetivo(){
+		return this.o;
 	}
 
 	public boolean isVisible() {
@@ -87,19 +104,19 @@ public class Jugador implements Constantes {
 		return lastj;
 	}
 	
-	public String getLastmove() {
-		return this.lastmove;
-	}
-	
 	public Rectangle getBounds() {
         return new Rectangle(this.i, this.j, this.ancho, this.alto);
     }
 	
 	public void move() {
-		lasti = i;
+        lasti = i;
 		lastj = j;
         i += di;
         j += dj;
+        
+        if(this.hasObjetivo()){
+        	this.o.setBackPJ();
+        }
         
         Rectangle rj = this.getBounds();
         //Hay que mejorar la implementacion en las esquinas
@@ -122,28 +139,13 @@ public class Jugador implements Constantes {
         		if(lastj>o.getJ()){
         			j=lastj;
         		}
+        		if(this.hasObjetivo()){
+    				this.o.setBack();
+    			}
         	}
         }
         
-        Casa c = (Casa)Escenario.casa;
-        if(rj.intersects(c.getBounds())){
-        	//Colision con lado izq
-    		if(this.i<c.getI()){
-    			i=lasti;
-    		}
-    		//Colision der
-    		if(this.i>c.getI()){
-    			i=lasti;
-    		}
-    		//Colision arriba
-    		if(this.j<c.getJ()){
-    			j=lastj;
-    		}
-    		//Colision abajo
-    		if(this.j>c.getJ()){
-    			j=lastj;
-    		}
-        }
+        
 		
         if (i < 1) {
             i = 1;
@@ -160,54 +162,46 @@ public class Jugador implements Constantes {
         if(j>altoMundo - this.getAlto() - this.getAlto()*1/2){
         	j=altoMundo - this.getAlto() - this.getAlto()*1/2;
         }
+        
     }
 	
 	public void mover_izq() {
 		di = -1*64;
-		this.lastmove = "izq";
+		this.move();
 	}
 	
 	public void mover_der() {
 		di = 1*64;
-		this.lastmove = "der";
+		this.move();
 	}
 	
 	public void mover_arriba() {
 		dj = -1*64;
-		this.lastmove = "arr";
+		this.move();
 	}
 	
 	public void mover_abajo() {
 		dj = 1*64;
-		this.lastmove = "aba";
-	}
-	
-	public void detener_mover(){
-		di = 0;
-		dj = 0;
+		this.move();
 	}
 	
 	public void keyPressed(KeyEvent e) {
 
         int key = e.getKeyCode();
-
+        
         if (key == KeyEvent.VK_LEFT) {
-            //di = -1;
         	mover_izq();
         }
 
         if (key == KeyEvent.VK_RIGHT) {
-            //di = 1;
             mover_der();
         }
 
         if (key == KeyEvent.VK_UP) {
-            //dj = -1;
         	mover_arriba();
         }
 
         if (key == KeyEvent.VK_DOWN) {
-            //dj = 1;
         	mover_abajo();
         }
     }
@@ -230,14 +224,6 @@ public class Jugador implements Constantes {
         if (key == KeyEvent.VK_DOWN) {
             dj = 0;
         }
+        
     }
-
-	public int getMonedas() {
-		return monedas;
-	}
-
-	public void setMonedas(int monedas) {
-		this.monedas = monedas;
-	}
-
 }

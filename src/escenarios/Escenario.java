@@ -102,10 +102,6 @@ public class Escenario extends JComponent implements ActionListener, Constantes{
 		objetivos.add(new Objetivo(64*13, 64*7));
 		num_objetivos = objetivos.size();
 	}
-
-	public void addNotify() {
-        super.addNotify();  
-    }
 	
 	public void paint(Graphics g) {
 		
@@ -170,7 +166,7 @@ public class Escenario extends JComponent implements ActionListener, Constantes{
             else enemigos.remove(i);
         }
 		
-		jugador.move();
+		//jugador.move();
 		this.checkCollisions();
 		this.repaint();
 		
@@ -195,40 +191,21 @@ public class Escenario extends JComponent implements ActionListener, Constantes{
             Rectangle ro = o.getBounds();
             Rectangle rc = casa.getBounds();
 
-            if (rj.intersects(ro)) { 	
-              //Colision con lado izq
-        		if(jugador.getLastmove() == "izq"){
-        			o.mover_izq();
-        			o.move();
-        			o.detener_mover();
-        		}
-        		//Colision der
-        		if(jugador.getLastmove() == "der"){
-        			o.mover_der();
-        			o.move();
-        			o.detener_mover();
-        		}
-        		//Colision arriba
-        		if(jugador.getLastmove() == "arr"){
-        			o.mover_arriba();
-        			o.move();
-        			o.detener_mover();
-        		}
-        		//Colision abajo
-        		if(jugador.getLastmove() == "aba"){
-        			o.mover_abajo();
-        			o.move();
-        			o.detener_mover();
-        		}
-        		
-        		
+            if (rj.intersects(ro)) { 
+            	jugador.setObjetivo(o);
+            	o.setBackPJ();
             }
-            if(ro.contains(rc)){
-    			o.setVisible(false);
-    			objetivos.remove(o);
-    			this.num_objetivos -= 1;
+            if(rj.contains(rc)){
+            	if(jugador.hasObjetivo()){
+            		jugador.getObjetivo().setVisible(false);
+            		objetivos.remove(jugador.getObjetivo());
+            		jugador.resetObjetivo();
+            		this.num_objetivos -= 1;
+            	}
+    			
     			if(this.num_objetivos == 0){
     				this.enjuego = false;
+    				this.player.parar();
     			}
     		}
         }
