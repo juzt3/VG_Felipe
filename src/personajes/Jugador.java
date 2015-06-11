@@ -1,5 +1,7 @@
 package personajes;
 
+import ia.BusquedaAnchura;
+
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -24,8 +26,10 @@ public class Jugador implements Constantes {
 	private int ancho, alto;
 	private boolean visible;
 	private BufferedImage imagen;
-	
+	//Objetivo
 	private Objetivo o;
+	//Inteligencia
+	BusquedaAnchura inteligencia;
 	
 	public Jugador(int i, int j){
 		this.i = i;
@@ -223,7 +227,6 @@ public class Jugador implements Constantes {
 
         if (key == KeyEvent.VK_DOWN) {
             dj = 0;
-        }
-        
+        }  
     }
 }
