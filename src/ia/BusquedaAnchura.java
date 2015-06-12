@@ -30,6 +30,9 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 		historial.add(inicial);
 		objetivo = new Estado(ox,oy,'N',null);
 		exito = false;
+		
+		//this.buscar();
+		//this.calcularRuta();
 	}
 	
 	public void buscar(){
@@ -137,9 +140,14 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 		}while(predecesor != null);
 		index_pasos = pasos.size()-1;
 	}
+	
+	public ArrayList<Character> getPasos(){
+		return pasos;
+	}
 
 	@Override
 	public void run() {
+		
 		if(index_pasos >= 0){
 			switch (pasos.get(index_pasos)){
 				case 'D': Escenario.jugador.mover_abajo();break;
@@ -147,7 +155,7 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 				case 'R': Escenario.jugador.mover_der();break;
 				case 'L': Escenario.jugador.mover_izq();break;
 			}
-			escenario.repaint();
+			//escenario.repaint();
 			index_pasos--;
 		}else{
 			this.cancel();

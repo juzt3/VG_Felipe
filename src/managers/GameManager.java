@@ -1,5 +1,7 @@
 package managers;
 
+import ia.BusquedaAnchura;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Toolkit;
@@ -9,8 +11,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
+import java.util.Timer;
 import opciones.Constantes;
 import escenarios.Escenario;
 import Pantallas.PantallaOpciones;
@@ -26,7 +28,9 @@ public class GameManager extends JPanel implements ActionListener, Constantes {
 	private boolean esperar = true;
 	private boolean esperarmusica = true;
 	
-	private Timer timer;
+	private javax.swing.Timer timerUI;
+	private java.util.Timer lanzadorTareas;
+	
 	
 	public GameManager(){
 		this.addKeyListener(new TAdapter());
@@ -38,8 +42,20 @@ public class GameManager extends JPanel implements ActionListener, Constantes {
 		this.setBackground(Color.BLACK);
 		this.setSize(altoMundo, anchoMundo);
 		
-		timer = new Timer(120, this);
-        timer.start();
+		timerUI = new javax.swing.Timer(120, this);
+        timerUI.start();
+        
+		BusquedaAnchura buscador_jugador = new BusquedaAnchura(es, es.jugador.getI(), es.jugador.getJ(), Escenario.objetivos.get(0).getI(), Escenario.objetivos.get(0).getJ());
+		Escenario.jugador.setInteligencia(buscador_jugador);
+		Escenario.jugador.getInteligencia().buscar();
+		Escenario.jugador.getInteligencia().calcularRuta();
+		
+		System.out.println(Escenario.jugador.getInteligencia().getPasos());
+		
+		lanzadorTareas = new java.util.Timer();
+		lanzadorTareas.scheduleAtFixedRate(buscador_jugador, 0, 500);
+		//lanzadorTareas.scheduleAtFixedRate(adversario1, 0, 1000);
+		//lanzadorTareas.scheduleAtFixedRate(adversario2, 0, 500);
 	}
 	
 	private class TAdapter extends KeyAdapter {

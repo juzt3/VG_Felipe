@@ -45,6 +45,14 @@ public class Jugador implements Constantes {
 		this.setVisible(true);
 	}
 	
+	public BusquedaAnchura getInteligencia(){
+		return this.inteligencia;
+	}
+	
+	public void setInteligencia(BusquedaAnchura b){
+		this.inteligencia = b;
+	}
+	
 	public void setObjetivo(Objetivo o){
 		this.o = o;
 	}
@@ -169,24 +177,37 @@ public class Jugador implements Constantes {
         
     }
 	
+	private void detenerMover(){
+		di = 0;
+		dj = 0;
+	}
+	
 	public void mover_izq() {
 		di = -1*64;
 		this.move();
+		this.detenerMover();
+		System.out.print("L, ");
 	}
 	
 	public void mover_der() {
 		di = 1*64;
 		this.move();
+		this.detenerMover();
+		System.out.print("R, ");
 	}
 	
 	public void mover_arriba() {
 		dj = -1*64;
 		this.move();
+		this.detenerMover();
+		System.out.print("U, ");
 	}
 	
 	public void mover_abajo() {
 		dj = 1*64;
 		this.move();
+		this.detenerMover();
+		System.out.print("D, ");
 	}
 	
 	public void keyPressed(KeyEvent e) {
