@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JComponent;
 
@@ -28,7 +29,8 @@ public class Escenario extends JComponent implements ActionListener, Constantes{
 	public static ArrayList<Enemigos> enemigos;
 	public static ArrayList<Obstaculo> obstaculos;
 	public static ArrayList<Objetivo> objetivos;
-	public static Casa casa;
+	public static Casa Ca,Cb,Cc,Cd;
+	private Objetivo Oa,Ob,Oc,Od;
 	//Otros atributos
 	private boolean enjuego;
 	public HiloMusica player;
@@ -44,15 +46,19 @@ public class Escenario extends JComponent implements ActionListener, Constantes{
 		
 		player = new HiloMusica(ruta+"/music/music.wav", 2);
 		
-		initObstaculos();
-		initEnemigos();
+		//initObstaculos();
+		//initEnemigos();
 		initObjetivos();
 		initCasa();
 
 	}
 	
 	private void initCasa(){
-		casa = new Casa(64,128);
+		Random generador = new Random();
+		Ca = new Casa(generador.nextInt(20)*64,generador.nextInt(11)*64 );
+		Cb = new Casa(generador.nextInt(20)*64,generador.nextInt(11)*64 );
+		Cc = new Casa(generador.nextInt(20)*64,generador.nextInt(11)*64 );
+		Cd = new Casa(generador.nextInt(20)*64,generador.nextInt(11)*64 );
 	}
 	
 	private void initObstaculos() {
@@ -95,11 +101,16 @@ public class Escenario extends JComponent implements ActionListener, Constantes{
 	}
 	
 	private void initObjetivos() {
+		Random r = new Random();
 		objetivos = new ArrayList<Objetivo>();
-		//objetivos.add(new Objetivo(64*6, 64*1));
-		objetivos.add(new Objetivo(64*10, 64*5));
-		objetivos.add(new Objetivo(64*1, 64*7));
-		objetivos.add(new Objetivo(64*13, 64*7));
+		Oa = new Objetivo(r.nextInt(20)*64, r.nextInt(11)*64);
+		Ob = new Objetivo(r.nextInt(20)*64, r.nextInt(11)*64);
+		Oc = new Objetivo(r.nextInt(20)*64, r.nextInt(11)*64);
+		Od = new Objetivo(r.nextInt(20)*64, r.nextInt(11)*64);
+		objetivos.add(Oa);
+		objetivos.add(Ob);
+		objetivos.add(Oc);
+		objetivos.add(Od);
 		num_objetivos = objetivos.size();
 	}
 	
@@ -112,17 +123,9 @@ public class Escenario extends JComponent implements ActionListener, Constantes{
 				g2d.drawImage(jugador.getImagen(), jugador.getI(), jugador.getJ(), this);
 			}
 			
-			for (int i = 0; i < enemigos.size(); i++) {
-                Enemigos e = (Enemigos)enemigos.get(i);
-                if (e.isVisible())
-                    g2d.drawImage(e.getImagen(), e.getI(), e.getJ(), this);
-            }
 			
-			for (int i = 0; i < obstaculos.size(); i++) {
-                Obstaculo o = (Obstaculo)obstaculos.get(i);
-                if (o.isVisible())
-                    g2d.drawImage(o.getImagen(), o.getI(), o.getJ(), this);
-            }
+			
+			
 			
 			for (int i = 0; i < objetivos.size(); i++) {
                 Objetivo c = (Objetivo)objetivos.get(i);
@@ -130,7 +133,10 @@ public class Escenario extends JComponent implements ActionListener, Constantes{
                     g2d.drawImage(c.getImagen(), c.getI(), c.getJ(), this);
             }
 			
-			g2d.drawImage(casa.getImagen(), casa.getI(), casa.getJ(), this);
+			g2d.drawImage(Ca.getImagen(), Ca.getI(), Ca.getJ(), this);
+			g2d.drawImage(Cb.getImagen(), Cb.getI(), Cb.getJ(), this);
+			g2d.drawImage(Cc.getImagen(), Cc.getI(), Cc.getJ(), this);
+			g2d.drawImage(Cd.getImagen(), Cd.getI(), Cd.getJ(), this);
 			
 		}else {
             String msg = "Game Over";
@@ -156,15 +162,7 @@ public class Escenario extends JComponent implements ActionListener, Constantes{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		for (int i = 0; i < enemigos.size(); i++) {
-            Enemigos ene = (Enemigos) enemigos.get(i);
-            if (ene.isVisible()){
-            	ene.mover_izq();
-            	ene.move();
-            } 
-                
-            else enemigos.remove(i);
-        }
+		
 		
 		//jugador.move();
 		this.checkCollisions();
@@ -175,30 +173,66 @@ public class Escenario extends JComponent implements ActionListener, Constantes{
 	private void checkCollisions() {
 		Rectangle rj = jugador.getBounds();
 		
-		//Enemigos
-        for (int j = 0; j<enemigos.size(); j++) {
-            Enemigos e = (Enemigos) enemigos.get(j);
-            Rectangle re = e.getBounds();
-
-            if (rj.intersects(re)) {
-                this.enjuego = false;
-                this.player.parar();
-            }
-        }
+		
         //Objetivos
         for (int j = 0; j<objetivos.size(); j++) {
             Objetivo o = (Objetivo) objetivos.get(j);
             Rectangle ro = o.getBounds();
-            Rectangle rc = casa.getBounds();
+            Rectangle rca = Ca.getBounds();
+            Rectangle rcb = Cb.getBounds();
+            Rectangle rcc = Cc.getBounds();
+            Rectangle rcd = Cd.getBounds();
 
             if (rj.intersects(ro)) { 
             	jugador.setObjetivo(o);
             	o.setBackPJ();
             }
-            if(rj.contains(rc)){
-            	if(jugador.hasObjetivo()){
+            if(rj.contains(rca)){
+            	if(jugador.hasObjetivo() & jugador.getObjetivo().equals(objetivos.get(0))){
             		jugador.getObjetivo().setVisible(false);
-            		objetivos.remove(jugador.getObjetivo());
+            		//objetivos.remove(jugador.getObjetivo());
+            		jugador.resetObjetivo();
+            		this.num_objetivos -= 1;
+            	}
+    			
+    			if(this.num_objetivos == 0){
+    				this.enjuego = false;
+    				this.player.parar();
+    			}
+    		}
+            
+            if(rj.contains(rcb)){
+            	if(jugador.hasObjetivo() & jugador.getObjetivo().equals(objetivos.get(1))){
+            		jugador.getObjetivo().setVisible(false);
+            		//objetivos.remove(jugador.getObjetivo());
+            		jugador.resetObjetivo();
+            		this.num_objetivos -= 1;
+            	}
+    			
+    			if(this.num_objetivos == 0){
+    				this.enjuego = false;
+    				this.player.parar();
+    			}
+    		}
+            
+            if(rj.contains(rcc)){
+            	if(jugador.hasObjetivo() & jugador.getObjetivo().equals(objetivos.get(2))){
+            		jugador.getObjetivo().setVisible(false);
+            		//objetivos.remove(jugador.getObjetivo());
+            		jugador.resetObjetivo();
+            		this.num_objetivos -= 1;
+            	}
+    			
+    			if(this.num_objetivos == 0){
+    				this.enjuego = false;
+    				this.player.parar();
+    			}
+            }
+            
+            if(rj.contains(rcd)){
+            	if(jugador.hasObjetivo() & jugador.getObjetivo().equals(objetivos.get(3))){
+            		jugador.getObjetivo().setVisible(false);
+            		//objetivos.remove(jugador.getObjetivo());
             		jugador.resetObjetivo();
             		this.num_objetivos -= 1;
             	}

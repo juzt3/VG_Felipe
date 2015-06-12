@@ -50,7 +50,7 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 	
 	private void moverArriba(Estado e){
 		if(e.getY() > 0){
-			if(!this.verifyObstaculos(e.getX(), e.getY()-(1*64))){
+			
 				Estado arriba = new Estado(e.getX(),e.getY()-64,'U',e);
 				if(!historial.contains(arriba)){
 					colaEstados.add(arriba);
@@ -62,13 +62,13 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 						exito = true;
 					}
 				}
-			}
+			
 		}
 	}
 	
 	private void moverAbajo(Estado e){
 		if(e.getY() > 0){
-			if(!this.verifyObstaculos(e.getX(), e.getY()+(1*64))){
+			
 				Estado abajo = new Estado(e.getX(),e.getY()+64,'D',e);
 				if(!historial.contains(abajo)){
 					colaEstados.add(abajo);
@@ -80,13 +80,13 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 						exito = true;
 					}
 				}
-			}
+			
 		}
 	}
 	
 	private void moverIzquierda(Estado e){
 		if(e.getY() > 0){
-			if(!this.verifyObstaculos(e.getX()-64, e.getY())){
+			
 				Estado izquierda = new Estado(e.getX()-64,e.getY(),'L',e);
 				if(!historial.contains(izquierda)){
 					colaEstados.add(izquierda);
@@ -98,13 +98,13 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 						exito = true;
 					}
 				}
-			}
+			
 		}
 	}
 	
 	private void moverDerecha(Estado e){
 		if(e.getY() > 0){
-			if(!this.verifyObstaculos(e.getX()+64, e.getY())){
+			
 				Estado derecha = new Estado(e.getX()+64,e.getY(),'R',e);
 				if(!historial.contains(derecha)){
 					colaEstados.add(derecha);
@@ -116,7 +116,7 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 						exito = true;
 					}
 				}
-			}
+			
 		}
 	}
 	

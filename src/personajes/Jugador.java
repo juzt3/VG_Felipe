@@ -132,30 +132,7 @@ public class Jugador implements Constantes {
         
         Rectangle rj = this.getBounds();
         //Hay que mejorar la implementacion en las esquinas
-        for(int x = 0; x<Escenario.obstaculos.size(); x++){
-        	Obstaculo o = (Obstaculo)Escenario.obstaculos.get(x);
-        	if(rj.contains(o.getBounds())){
-        		//Colision con lado izq
-        		if(lasti<o.getI()){
-        			i=lasti;
-        		}
-        		//Colision der
-        		if(lasti>o.getI()){
-        			i=lasti;
-        		}
-        		//Colision arriba
-        		if(lastj<o.getJ()){
-        			j=lastj;
-        		}
-        		//Colision abajo
-        		if(lastj>o.getJ()){
-        			j=lastj;
-        		}
-        		if(this.hasObjetivo()){
-    				this.o.setBack();
-    			}
-        	}
-        }
+        
         
         
 		
