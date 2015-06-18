@@ -20,6 +20,8 @@ public class Objetivo {
 	private boolean visible;
 	private BufferedImage imagen;
 	
+	private String nombre;
+	
 	public Objetivo(int i, int j){
 		this.i = i;
 		this.j = j;
@@ -32,6 +34,26 @@ public class Objetivo {
 		this.ancho = this.imagen.getWidth();
 		this.alto = this.imagen.getHeight();
 		this.setVisible(true);
+		this.nombre = "default";
+	}
+	
+	public Objetivo(int i, int j, String nombre){
+		this.i = i;
+		this.j = j;
+		try{
+			this.imagen = ImageIO.read(new File("images/"+this.img));
+		}
+		catch(IOException e){
+			System.out.println(e.toString());
+		}
+		this.ancho = this.imagen.getWidth();
+		this.alto = this.imagen.getHeight();
+		this.setVisible(true);
+		this.nombre = nombre;
+	}
+	
+	public String getName(){
+		return nombre;
 	}
 	
 	public boolean isVisible() {

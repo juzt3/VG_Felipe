@@ -159,28 +159,28 @@ public class Jugador implements Constantes {
 		dj = 0;
 	}
 	
-	public void mover_izq() {
+	public synchronized void mover_izq() {
 		di = -1*64;
 		this.move();
 		this.detenerMover();
 		System.out.print("L, ");
 	}
 	
-	public void mover_der() {
+	public synchronized void mover_der() {
 		di = 1*64;
 		this.move();
 		this.detenerMover();
 		System.out.print("R, ");
 	}
 	
-	public void mover_arriba() {
+	public synchronized void mover_arriba() {
 		dj = -1*64;
 		this.move();
 		this.detenerMover();
 		System.out.print("U, ");
 	}
 	
-	public void mover_abajo() {
+	public synchronized void mover_abajo() {
 		dj = 1*64;
 		this.move();
 		this.detenerMover();

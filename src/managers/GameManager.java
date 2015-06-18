@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 
 import java.util.Timer;
+
 import opciones.Constantes;
 import escenarios.Escenario;
 import Pantallas.PantallaOpciones;
@@ -31,6 +32,7 @@ public class GameManager extends JPanel implements ActionListener, Constantes {
 	private javax.swing.Timer timerUI;
 	private java.util.Timer lanzadorTareas;
 	
+	BusquedaAnchura buscador_jugador;
 	
 	public GameManager(){
 		this.addKeyListener(new TAdapter());
@@ -45,7 +47,7 @@ public class GameManager extends JPanel implements ActionListener, Constantes {
 		timerUI = new javax.swing.Timer(120, this);
         timerUI.start();
         
-		BusquedaAnchura buscador_jugador = new BusquedaAnchura(es, es.jugador.getI(), es.jugador.getJ(), Escenario.objetivos.get(0).getI(), Escenario.objetivos.get(0).getJ());
+		buscador_jugador = new BusquedaAnchura(es, es.jugador.getI(), es.jugador.getJ(), Escenario.objetivos.get(0).getI(), Escenario.objetivos.get(0).getJ(), gsm);
 		Escenario.jugador.setInteligencia(buscador_jugador);
 		Escenario.jugador.getInteligencia().buscar();
 		Escenario.jugador.getInteligencia().calcularRuta();
@@ -53,7 +55,7 @@ public class GameManager extends JPanel implements ActionListener, Constantes {
 		System.out.println(Escenario.jugador.getInteligencia().getPasos());
 		
 		lanzadorTareas = new java.util.Timer();
-		lanzadorTareas.scheduleAtFixedRate(buscador_jugador, 0, 500);
+		//lanzadorTareas.scheduleAtFixedRate(buscador_jugador, 0, 500);
 		//lanzadorTareas.scheduleAtFixedRate(adversario1, 0, 1000);
 		//lanzadorTareas.scheduleAtFixedRate(adversario2, 0, 500);
 	}
@@ -75,6 +77,7 @@ public class GameManager extends JPanel implements ActionListener, Constantes {
         				gsm.setEN_JUEGO(true);
         				gsm.setEN_MENU(false);
         				gsm.setEN_OPCIONES(false);
+        				lanzadorTareas.scheduleAtFixedRate(buscador_jugador, 0, 500);
         				es.player.run();
         			}else{
         				System.exit(0);
@@ -105,6 +108,7 @@ public class GameManager extends JPanel implements ActionListener, Constantes {
         			gsm.setEN_OPCIONES(false);
         			gsm.setEN_MENU(false);
         			gsm.setEN_JUEGO(true);
+        			
         			if(op.isMusica()){
         				es.player.reanudar();
         			}

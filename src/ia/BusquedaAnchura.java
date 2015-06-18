@@ -4,8 +4,10 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.TimerTask;
 
+import managers.GameStateManager;
 import escenarios.Escenario;
 import opciones.Constantes;
+import personajes.Casa;
 import personajes.Obstaculo;
 
 public class BusquedaAnchura extends TimerTask implements Constantes {
@@ -18,8 +20,9 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 	private Estado objetivo;
 	private Estado temp;
 	private boolean exito;
+	private GameStateManager gs;
 	
-	public BusquedaAnchura(Escenario escenario, int jx, int jy, int ox, int oy){
+	public BusquedaAnchura(Escenario escenario, int jx, int jy, int ox, int oy, GameStateManager gs){
 		this.escenario = escenario;
 		colaEstados = new ArrayList<Estado>();
 		historial = new ArrayList<Estado>();
@@ -30,6 +33,7 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 		historial.add(inicial);
 		objetivo = new Estado(ox,oy,'N',null);
 		exito = false;
+		this.gs = gs;
 		
 		//this.buscar();
 		//this.calcularRuta();
@@ -50,7 +54,7 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 	
 	private void moverArriba(Estado e){
 		if(e.getY() > 0){
-			
+			if(!this.verifyObstaculos(e.getX(), e.getY()-64)){
 				Estado arriba = new Estado(e.getX(),e.getY()-64,'U',e);
 				if(!historial.contains(arriba)){
 					colaEstados.add(arriba);
@@ -62,13 +66,13 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 						exito = true;
 					}
 				}
-			
+			}
 		}
 	}
 	
 	private void moverAbajo(Estado e){
 		if(e.getY() > 0){
-			
+			if(!this.verifyObstaculos(e.getX(), e.getY()+64)){
 				Estado abajo = new Estado(e.getX(),e.getY()+64,'D',e);
 				if(!historial.contains(abajo)){
 					colaEstados.add(abajo);
@@ -80,13 +84,13 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 						exito = true;
 					}
 				}
-			
+			}
 		}
 	}
 	
 	private void moverIzquierda(Estado e){
 		if(e.getY() > 0){
-			
+			if(!this.verifyObstaculos(e.getX()-64, e.getY())){
 				Estado izquierda = new Estado(e.getX()-64,e.getY(),'L',e);
 				if(!historial.contains(izquierda)){
 					colaEstados.add(izquierda);
@@ -98,13 +102,13 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 						exito = true;
 					}
 				}
-			
+			}
 		}
 	}
 	
 	private void moverDerecha(Estado e){
 		if(e.getY() > 0){
-			
+			if(!this.verifyObstaculos(e.getX()+64, e.getY())){
 				Estado derecha = new Estado(e.getX()+64,e.getY(),'R',e);
 				if(!historial.contains(derecha)){
 					colaEstados.add(derecha);
@@ -116,7 +120,7 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 						exito = true;
 					}
 				}
-			
+			}
 		}
 	}
 	
@@ -126,6 +130,31 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 		for(int i = 0; i < Escenario.obstaculos.size(); i++){
 			Obstaculo o = (Obstaculo)Escenario.obstaculos.get(i);
 			if(rj.contains(o.getBounds())){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean verifyCasa(int x, int y){
+		Rectangle rj = new Rectangle(x,y,64,64);
+		
+		for(int i = 0; i < 4; i++){
+			Casa a = (Casa)Escenario.Ca;
+			Casa b = (Casa)Escenario.Cb;
+			Casa c = (Casa)Escenario.Cc;
+			Casa d = (Casa)Escenario.Cd;
+			
+			if(rj.contains(a.getBounds())){
+				return true;
+			}
+			if(rj.contains(b.getBounds())){
+				return true;
+			}
+			if(rj.contains(c.getBounds())){
+				return true;
+			}
+			if(rj.contains(d.getBounds())){
 				return true;
 			}
 		}
@@ -148,17 +177,19 @@ public class BusquedaAnchura extends TimerTask implements Constantes {
 	@Override
 	public void run() {
 		
-		if(index_pasos >= 0){
-			switch (pasos.get(index_pasos)){
-				case 'D': Escenario.jugador.mover_abajo();break;
-				case 'U': Escenario.jugador.mover_arriba();break;
-				case 'R': Escenario.jugador.mover_der();break;
-				case 'L': Escenario.jugador.mover_izq();break;
+		if(gs.isEN_JUEGO()){
+			if(index_pasos >= 0){
+				switch (pasos.get(index_pasos)){
+					case 'D': Escenario.jugador.mover_abajo();break;
+					case 'U': Escenario.jugador.mover_arriba();break;
+					case 'R': Escenario.jugador.mover_der();break;
+					case 'L': Escenario.jugador.mover_izq();break;
+				}
+				//escenario.repaint();
+				index_pasos--;
+			}else{
+				this.cancel();
 			}
-			//escenario.repaint();
-			index_pasos--;
-		}else{
-			this.cancel();
 		}
 	}
 }
